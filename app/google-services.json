@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "131600450460",
+    "firebase_url": "https://database-7cf0e.firebaseio.com",
+    "project_id": "database-7cf0e",
+    "storage_bucket": "database-7cf0e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:131600450460:android:8095b224b854a7f900fe59",
+        "android_client_info": {
+          "package_name": "com.example.camera1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "131600450460-p39g0m3hdc984hfmschllko5v4dinlj3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDIeAe-w8fvKftZLaEyfRQfDptBZoFK_wY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "131600450460-p39g0m3hdc984hfmschllko5v4dinlj3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
