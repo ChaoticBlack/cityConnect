@@ -49,7 +49,7 @@ public class maps extends AppCompatActivity implements OnMapReadyCallback{
     private TextView mTextMessage;
     private DatabaseReference mDatabase;
     private GoogleMap mMap;
-    private static final float DEFAULT_ZOOM = 10f;
+    private static final float DEFAULT_ZOOM = 17f;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener()
@@ -67,6 +67,8 @@ public class maps extends AppCompatActivity implements OnMapReadyCallback{
                     return true;
                 }
                 case R.id.map_dashboard:
+                    //in= new Intent(getBaseContext(), maps.class);
+                    //startActivity(in);
                     return true;
                 case R.id.rate_us: {
                     //mTextMessage.setText(R.string.title_notifications);
@@ -137,7 +139,7 @@ public class maps extends AppCompatActivity implements OnMapReadyCallback{
     }
     public void displayfirebaselocations()
     {
-        LatLng latLng=new LatLng(18.522694,73.859105);
+        LatLng latLng=new LatLng(MainActivity.userLat, MainActivity.userLong);
         Log.d("map", "displayfirebaselocations:"+"pune");
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,DEFAULT_ZOOM));
         DatabaseReference mDatabase;
@@ -146,6 +148,7 @@ public class maps extends AppCompatActivity implements OnMapReadyCallback{
             @Override
             public void onDataChange(DataSnapshot dataSnapshot)
             {
+                mMap.clear();
                 for (DataSnapshot ds : dataSnapshot.getChildren())
                 {
                     String title=ds.getKey();

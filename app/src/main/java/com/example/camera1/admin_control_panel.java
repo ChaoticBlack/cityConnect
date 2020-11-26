@@ -31,7 +31,7 @@ public class admin_control_panel extends AppCompatActivity implements OnMapReady
 
     private static final String TAG ="MainActivity" ;
     private GoogleMap mMap ;
-    private static final float DEFAULT_ZOOM = 10f;
+    private static final float DEFAULT_ZOOM = 12f;
     private CheckBox c;
     private ArrayList<Integer> query_id=new ArrayList<Integer>();
     RecyclerView r;
@@ -198,7 +198,7 @@ public class admin_control_panel extends AppCompatActivity implements OnMapReady
 //                    query_id.add(key);
                     String currents = String.valueOf(ds.child("status").getValue());
 
-                    if(currents.equals("true")) {
+                    if(currents.equals("false")) {
 
 
                         items1.add(title);

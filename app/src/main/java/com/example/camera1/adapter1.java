@@ -96,11 +96,11 @@ public class adapter1 extends RecyclerView.Adapter<adapter1.ViewHolder>
 
                     Toast.makeText(c, "C1 is checked", Toast.LENGTH_SHORT).show();
                     //Log.d(TAG, "ischeck: "+text);
-                    mDatabase.child("users").child(data1.get(position)).child("status").setValue("false");
+                    mDatabase.child("users").child(data1.get(position)).child("status").setValue("true");
                 }
                 else
                 {
-                    mDatabase.child("users").child(data1.get(position)).child("status").setValue("true");
+                    mDatabase.child("users").child(data1.get(position)).child("status").setValue("false");
                 }
             }
         });

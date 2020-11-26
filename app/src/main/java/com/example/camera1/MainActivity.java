@@ -24,6 +24,9 @@ import com.example.camera1.ml.Model1;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.Continuation;
@@ -52,7 +55,9 @@ import androidx.multidex.MultiDex;
 
 import android.os.Environment;
 import android.os.Handler;
+import android.os.Looper;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.view.Menu;
@@ -102,6 +107,8 @@ public class MainActivity extends AppCompatActivity {
     private FusedLocationProviderClient mFusedLocationProviderClient;
     Location currentLocation;
     static @NonNull List<Category> probability;
+    static double userLat;
+    static double userLong;
     static int n;
     public static class User {
 
@@ -171,7 +178,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     //oncreate method
     protected void onCreate(Bundle savedInstanceState) {
+        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         super.onCreate(savedInstanceState);
+
         //Context context;
         //context=GetHelp.this;
 //         LocationManager mLocationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
@@ -431,88 +440,204 @@ public class MainActivity extends AppCompatActivity {
                     LOCATION_PERMISSION_REQUEST_CODE);
         }
     }
-
-
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         Log.d(TAG, "onRequestPermissionsResult: called.");
         mLocationPermissionsGranted = false;
 
-        switch(requestCode){
-            case LOCATION_PERMISSION_REQUEST_CODE:{
-                if(grantResults.length > 0){
-                    for(int i = 0; i < grantResults.length; i++)
-                    {
-                        if(grantResults[i] != PackageManager.PERMISSION_GRANTED)
-                        {
-                            mLocationPermissionsGranted = false;
-                            Log.d(TAG, "onRequestPermissionsResult: permission Denied");
-                            return;
-                        }
-
-                    }
+        switch (requestCode) {
+            case LOCATION_PERMISSION_REQUEST_CODE: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     mLocationPermissionsGranted = true;
                     Log.d(TAG, "onRequestPermissionsResult: permission granted");
-                   // getDeviceLocation();
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run()
-                        {
-                            getDeviceLocation();
-                        }
-                    }, 3000);
-
-
+                    getDeviceLocation();
+                } else {
+                    mLocationPermissionsGranted = false;
+                    Log.d(TAG, "onRequestPermissionsResult: permission Denied");
+                    return;
                 }
+//                if (grantResults.length > 0) {
+//                    for (int i = 0; i < grantResults.length; i++) {
+//                        Log.d(TAG, "onRequestPermissionsResult:" + grantResults[i]);
+//                        if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
+//                            mLocationPermissionsGranted = false;
+//                            Log.d(TAG, "onRequestPermissionsResult: permission Denied");
+//                            return;
+//                        }
+//
+//                    }
+//                    mLocationPermissionsGranted = true;
+//                    Log.d(TAG, "onRequestPermissionsResult: permission granted");
+//
+//                    getDeviceLocation();
+//                }
             }
         }
+
     }
-    private void getDeviceLocation()
-    {
-        Log.d(TAG, "getDeviceLocation: getting the devices current location");
 
-        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-        try {
-            if (mLocationPermissionsGranted)
-            {
-
-                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    return ;
-                }
-                Log.d(TAG, "onComplete: get location");
-                Task location = mFusedLocationProviderClient.getLastLocation();
-                location.addOnCompleteListener(new OnCompleteListener(){
-                    @Override
-                    public void onComplete(@NonNull Task task) {
-                        if(task.isSuccessful())
+//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+//        Log.d(TAG, "onRequestPermissionsResult: called.");
+//        mLocationPermissionsGranted = false;
+//
+//        switch(requestCode){
+//            case LOCATION_PERMISSION_REQUEST_CODE:{
+//                if(grantResults.length > 0){
+//                    for(int i = 0; i < grantResults.length; i++)
+//                    {
+//                        if(grantResults[i] != PackageManager.PERMISSION_GRANTED)
+//                        {
+//                            mLocationPermissionsGranted = false;
+//                            Log.d(TAG, "onRequestPermissionsResult: permission Denied");
+//                            return;
+//                        }
+//
+//                    }
+//                    mLocationPermissionsGranted = true;
+//                    Log.d(TAG, "onRequestPermissionsResult: permission granted");
+//                    getDeviceLocation();
+//                    new Handler().postDelayed(new Runnable() {
+//                        @Override
+//                        public void run()
+//                        {
+//                            getDeviceLocation();
+//                        }
+//                    }, 3000);
+//
+//
+//                }
+//            }
+//        }
+//    }
+//    private void getDeviceLocation()
+//    {
+//        Log.d(TAG, "getDeviceLocation: getting the devices current location");
+//
+//        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+//        try {
+//            if (mLocationPermissionsGranted)
+//            {
+//
+//                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//                    return ;
+//                }
+//                Log.d(TAG, "onComplete: get location");
+//                Task location = mFusedLocationProviderClient.getLastLocation();
+//                location.addOnCompleteListener(new OnCompleteListener(){
+//                    @Override
+//                    public void onComplete(@NonNull Task task) {
+//                        if(task.isSuccessful())
+//                        {
+//                            Log.d(TAG, "onComplete: found Location!");
+//                            currentLocation = (Location) task.getResult();
+//                            //Log.d(TAG, "onComplete:"+currentLocation.getLatitude());
+//
+//                            latLng=new LatLng(currentLocation.getLatitude(),currentLocation.getLongitude());
+//                            Log.d(TAG, "onComplete:"+latLng.latitude);
+//                            //moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()),DEFAULT_ZOOM, "your Query");
+//                            //mDatabase.child("location_info").child("1").setValue(new User(latLng.latitude, latLng.longitude,"true","imageurl"));
+//                            //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,DEFAULT_ZOOM));
+//                            //displayfirebaselocations();
+//                        }
+//                        else{
+//                            Log.d(TAG, "onComplete: current location is null");
+//                            Toast.makeText(getApplicationContext(), "unable to get current location", Toast.LENGTH_SHORT).show();
+//                            Intent i=new Intent(getApplicationContext(),MainActivity.class);
+//                            startActivity(i);
+//
+//                        }
+//                    }
+//                });
+//            }
+//        }catch (SecurityException e){
+//            Log.e(TAG, "getDeviceLocation: SecurityException: " + e.getMessage() );
+//        }
+//
+//    }
+private void getDeviceLocation() {
+    /*
+     * Get the best and most recent location of the device, which may be null in rare
+     * cases when a location is not available.
+     */
+    try {
+        if (mLocationPermissionsGranted) {
+            Task<Location> locationResult = mFusedLocationProviderClient.getLastLocation();
+            locationResult.addOnCompleteListener(this, new OnCompleteListener<Location>() {
+                @Override
+                public void onComplete(@NonNull Task<Location> task) {
+                    if (task.isSuccessful())
+                    {
+                        // Set the map's camera position to the current location of the device.
+                        Log.d(TAG, "onComplete: found Location!");
+                        currentLocation = (Location) task.getResult();
+                        if (currentLocation != null)
                         {
-                            Log.d(TAG, "onComplete: found Location!");
-                            currentLocation = (Location) task.getResult();
-                            //Log.d(TAG, "onComplete:"+currentLocation.getLatitude());
-
                             latLng=new LatLng(currentLocation.getLatitude(),currentLocation.getLongitude());
                             Log.d(TAG, "onComplete:"+latLng.latitude);
-                            //moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()),DEFAULT_ZOOM, "your Query");
-                            //mDatabase.child("location_info").child("1").setValue(new User(latLng.latitude, latLng.longitude,"true","imageurl"));
-                            //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,DEFAULT_ZOOM));
-                            //displayfirebaselocations();
+                            userLat = currentLocation.getLatitude();
+                            userLong = currentLocation.getLongitude();
                         }
-                        else{
-                            Log.d(TAG, "onComplete: current location is null");
-                            Toast.makeText(getApplicationContext(), "unable to get current location", Toast.LENGTH_SHORT).show();
-                            Intent i=new Intent(getApplicationContext(),MainActivity.class);
-                            startActivity(i);
+                        else
+                        {
 
+                            Log.d(TAG, "onComplete:"+"location is null");
+                            requestNewLocationData();
                         }
                     }
-                });
-            }
-        }catch (SecurityException e){
-            Log.e(TAG, "getDeviceLocation: SecurityException: " + e.getMessage() );
+                    else
+                    {
+                        Log.d(TAG, "onComplete: current location is null");
+                        Toast.makeText(getApplicationContext(), "unable to get current location", Toast.LENGTH_SHORT).show();
+                        Intent i=new Intent(getApplicationContext(),MainActivity.class);
+                        startActivity(i);
+
+                    }
+                }
+            });
         }
-
+    } catch (SecurityException e)  {
+        Log.e("Exception: %s", e.getMessage(), e);
     }
+}
+    private void requestNewLocationData() {
 
+        // Initializing LocationRequest
+        // object with appropriate methods
+        LocationRequest mLocationRequest = new LocationRequest();
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        mLocationRequest.setInterval(5);
+        mLocationRequest.setFastestInterval(0);
+        mLocationRequest.setNumUpdates(1);
 
+        // setting LocationRequest
+        // on FusedLocationClient
+        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        mFusedLocationProviderClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
+    }
+    private LocationCallback mLocationCallback = new LocationCallback()
+    {
+
+        @Override
+        public void onLocationResult(LocationResult locationResult)
+        {
+            Location mLastLocation = locationResult.getLastLocation();
+            latLng=new LatLng(mLastLocation.getLatitude(),mLastLocation.getLongitude());
+            userLat = currentLocation.getLatitude();
+            userLong = currentLocation.getLongitude();
+            Log.d(TAG, "onLocationResult:"+"shivam is great");
+            Log.d(TAG, "onComplete:"+latLng.latitude);
+        }
+    };
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -654,12 +779,13 @@ private void uploadImage() {
 // Obtain a number between [0 - 49].
                 //int n = rand.nextInt(50000);
                 Log.d(TAG, "onComplete:"+"jnjn");
-                mDatabase.child("users").child(String.valueOf(n)).setValue(new User(latLng.latitude,latLng.longitude,"false",downloadUri.toString()));
+                mDatabase.child("users").child(String.valueOf(n)).setValue(new User(latLng.latitude,latLng.longitude,"false",downloadUri.toString()));  //false= unresloved complait
 
             }
             else {
                 // Handle failures
                 // ...
+                //showInternetDialog();
             }
         }
     });
@@ -668,6 +794,25 @@ private void uploadImage() {
 
 
 }
+//    public void showInternetDialog()
+//    {
+//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//        builder.setMessage("Connect to wifi or quit")
+//                .setCancelable(false)
+//                .setPositiveButton("Connect to WIFI", new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int id) {
+//                        startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
+//                    }
+//                })
+//                .setNegativeButton("Mobile-Data", new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int id) {
+//                        Intent intent = new Intent(Settings.ACTION_DATA_USAGE_SETTINGS);
+//                        startActivity(intent);
+//                    }
+//                });
+//        AlertDialog alert = builder.create();
+//        alert.show();
+//    }
     private MappedByteBuffer loadModelFile() throws IOException
     {
         //InputStream inputStream = getAssets().open("model.tflite");
