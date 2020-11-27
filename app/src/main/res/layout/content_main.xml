@@ -17,8 +17,13 @@ tools:showIn="@layout/activity_main">
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:background="@drawable/buttonradius"
+        android:fontFamily="helvetica"
         android:onClick="cameracapture"
+        android:shadowColor="#000000"
+        android:shadowRadius="0"
+
         android:text="Click Photo"
+        android:textSize="22dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -28,8 +33,8 @@ tools:showIn="@layout/activity_main">
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="210dp"
-        android:layout_height="252dp"
+        android:layout_width="277dp"
+        android:layout_height="309dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
@@ -38,35 +43,39 @@ tools:showIn="@layout/activity_main">
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.551"
+        app:layout_constraintHorizontal_bias="0.533"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.76"
+        app:layout_constraintVertical_bias="0.49"
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="321dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:text="CITY CONNECT"
+        android:layout_width="430dp"
+        android:layout_height="78dp"
+        android:background="@drawable/buttonradius"
+        android:paddingLeft="240px"
+        android:paddingTop="55px"
+        android:paddingBottom="10px"
+        android:text="City Connect"
         android:textAlignment="center"
-        android:textSize="30sp"
-        android:textStyle="bold|italic"
+        android:textColor="#FFFFFF"
+        android:textSize="25sp"
+        android:textStyle="bold"
+
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/button2"
+        app:layout_constraintHorizontal_bias="0.111"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.074" />
+        app:layout_constraintVertical_bias="0.0" />
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/nav_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="0dp"
-        android:layout_marginEnd="0dp"
         android:background="?android:attr/windowBackground"
+        app:itemRippleColor="@color/navbarGreen"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -74,18 +83,33 @@ tools:showIn="@layout/activity_main">
 
     <ImageButton
         android:id="@+id/button2"
-        android:layout_width="52dp"
-        android:layout_height="58dp"
+        android:layout_width="71dp"
+        android:layout_height="72dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
+        android:background="#004AAB48"
         android:onClick="adminlog"
+        android:scaleX="2"
+        android:scaleY="2"
         android:src="@drawable/ic_account_box_black_24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.973"
+        app:layout_constraintHorizontal_bias="0.543"
         app:layout_constraintStart_toStartOf="@+id/nav_view"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.913" />
+
+    <ImageView
+        android:id="@+id/imageView10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/button2"
+        app:layout_constraintHorizontal_bias="0.77"
+        app:layout_constraintStart_toStartOf="@+id/textView"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@mipmap/insidelogo8" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
