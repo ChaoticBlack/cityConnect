@@ -14,6 +14,8 @@ import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.content.ContextWrapper;
@@ -349,7 +351,7 @@ public class MainActivity extends AppCompatActivity {
                         if (filePath != null)
                             Log.i("hi", "bye");
                         myimageview.setImageBitmap(photo);
-                        MediaStore.Images.Media.insertImage(getContentResolver(), photo, "taklus", "timepass");
+                        MediaStore.Images.Media.insertImage(getContentResolver(), photo, "xyzabc", "timepass");
                         Log.i("Takla", "takal");
 //        ActivityCompat.requestPermissions(MainActivity.this,
 //                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
@@ -632,8 +634,8 @@ private void getDeviceLocation() {
         {
             Location mLastLocation = locationResult.getLastLocation();
             latLng=new LatLng(mLastLocation.getLatitude(),mLastLocation.getLongitude());
-            userLat = currentLocation.getLatitude();
-            userLong = currentLocation.getLongitude();
+            userLat = mLastLocation.getLatitude();
+            userLong = mLastLocation.getLongitude();
             Log.d(TAG, "onLocationResult:"+"shivam is great");
             Log.d(TAG, "onComplete:"+latLng.latitude);
         }
@@ -715,7 +717,7 @@ private void getDeviceLocation() {
 
 public Uri getImageUri(Context inContext, Bitmap inImage) {
     Bitmap OutImage = Bitmap.createScaledBitmap(inImage, 300, 300,true);
-    String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), OutImage, "Title", null);
+    String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), OutImage, "shiVAM", null);
     return Uri.parse(path);
 }
 
@@ -785,7 +787,8 @@ private void uploadImage() {
             else {
                 // Handle failures
                 // ...
-                //showInternetDialog();
+                showInternetDialog();
+                Log.d(TAG, "onComplete:"+"soham is great");
             }
         }
     });
@@ -794,25 +797,31 @@ private void uploadImage() {
 
 
 }
-//    public void showInternetDialog()
-//    {
-//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//        builder.setMessage("Connect to wifi or quit")
-//                .setCancelable(false)
-//                .setPositiveButton("Connect to WIFI", new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int id) {
-//                        startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
-//                    }
-//                })
-//                .setNegativeButton("Mobile-Data", new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int id) {
-//                        Intent intent = new Intent(Settings.ACTION_DATA_USAGE_SETTINGS);
-//                        startActivity(intent);
-//                    }
-//                });
-//        AlertDialog alert = builder.create();
-//        alert.show();
+//    private boolean isNetworkAvailable() {
+//        ConnectivityManager connectivityManager
+//                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+//        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+//        return activeNetworkInfo != null;
 //    }
+    public void showInternetDialog()
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Connect to wifi or quit")
+                .setCancelable(false)
+                .setPositiveButton("Connect to WIFI", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
+                    }
+                })
+                .setNegativeButton("Mobile-Data", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Intent intent = new Intent(Settings.ACTION_DATA_USAGE_SETTINGS);
+                        startActivity(intent);
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
     private MappedByteBuffer loadModelFile() throws IOException
     {
         //InputStream inputStream = getAssets().open("model.tflite");
