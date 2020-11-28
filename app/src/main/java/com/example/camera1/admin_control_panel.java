@@ -33,7 +33,7 @@ public class admin_control_panel extends AppCompatActivity implements OnMapReady
 
     private static final String TAG ="MainActivity" ;
     private GoogleMap mMap ;
-    private static final float DEFAULT_ZOOM = 10f;
+    private static final float DEFAULT_ZOOM = 12f;
     private CheckBox c;
     private ArrayList<Integer> query_id=new ArrayList<Integer>();
     RecyclerView r;
