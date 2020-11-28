@@ -112,6 +112,8 @@ public class MainActivity extends AppCompatActivity {
     static double userLat;
     static double userLong;
     static int n;
+    //public String android_id = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
+
     public static class User {
 
 
