@@ -114,18 +114,21 @@ public class MainActivity extends AppCompatActivity {
     static int n;
     //public String android_id = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
 
-    public static class User {
+    public static class User 
+    {
 
 
         public double longitude;
         public double latitude;
         public String status,imageurl;
 
-        public User() {
+        public User()
+        {
             // Default constructor required for calls to DataSnapshot.getValue(User.class)
         }
 
-        public User(double latitude, double longitude,String status,String imageurl) {
+        public User(double latitude, double longitude,String status,String imageurl)
+        {
             this.latitude=latitude;
             this.longitude=longitude;
             this.status=status;
@@ -220,16 +223,11 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        // isMapsEnabled();
-        //getLocationPermission();
-        //getDeviceLocation();
         Button x=(Button) findViewById(R.id.button);
         myimageview=(ImageView) findViewById(R.id.imageView);
-        Log.i("adhi","adhi");
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        Log.i("adhi1","adhi1");
 //        Toolbar toolbar = findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
 //
@@ -248,21 +246,27 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    public boolean isServicesOK() {
+    public boolean isServicesOK() 
+    {
         Log.d(TAG, "isServicesOK: checking google services version");
 
         int available = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(MainActivity.this);
 
-        if (available == ConnectionResult.SUCCESS) {
+        if (available == ConnectionResult.SUCCESS)
+        {
             //everything is fine and the user can make map requests
             Log.d(TAG, "isServicesOK: Google Play Services is working");
             return true;
-        } else if (GoogleApiAvailability.getInstance().isUserResolvableError(available)) {
+        }
+        else if (GoogleApiAvailability.getInstance().isUserResolvableError(available)) 
+        {
             //an error occured but we can resolve it
             Log.d(TAG, "isServicesOK: an error occured but we can fix it");
             Dialog dialog = GoogleApiAvailability.getInstance().getErrorDialog(MainActivity.this, available, ERROR_DIALOG_REQUEST);
             dialog.show();
-        } else {
+        } 
+        else
+        {
             Toast.makeText(this, "You can't make map requests", Toast.LENGTH_SHORT).show();
         }
         return false;
@@ -273,7 +277,6 @@ public class MainActivity extends AppCompatActivity {
 
         if ( !manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) )
         {
-            //buildAlertMessageNoGps();
             Log.d(TAG, "isGpsEnabled:"+"not enable");
             return false;
         }
@@ -295,7 +298,8 @@ public class MainActivity extends AppCompatActivity {
         alert.show();
     }
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) 
+    {
         super.onActivityResult(requestCode, resultCode, data);
         Log.d(TAG, "onActivityResult: called.");
         switch (requestCode)
@@ -304,7 +308,6 @@ public class MainActivity extends AppCompatActivity {
                 {
                     Log.d(TAG, "onActivityResult:"+"GPS enable ");
                     getLocationPermission();
-                     //getDeviceLocation();
                 }
             case 1:
             {
@@ -328,17 +331,20 @@ public class MainActivity extends AppCompatActivity {
                         Log.d(TAG, "onActivityResult:" + probability.get(0).getScore());
                         // Releases model resources if no longer used.
                         model.close();
-                    } catch (IOException e) {
+                    } 
+                    catch (IOException e) 
+                    {
                         // TODO Handle the exception
                     }
-                    if (probability.get(0).getScore() > 0.51) {
+                    if (probability.get(0).getScore() > 0.51)
+                    {
                         new AlertDialog.Builder(this)
-                                .setTitle("Stupid Image")
-                                .setMessage("Are you blind?")
+                                .setTitle("Not a pothole? ")
+                                .setMessage("Our Machine Learning Model is not detecting it as potehole PLEASE TRY AGAIN!!")
                                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        //Toast.makeText(getApplicationContext(),"Image Uploaded",Toast.LENGTH_LONG).show();
+                                        
                                     }
                                 }).setNegativeButton("", null).show();
 
@@ -351,7 +357,7 @@ public class MainActivity extends AppCompatActivity {
 
                         filePath = getImageUri(getApplicationContext(), photo);
                         if (filePath != null)
-                            Log.i("hi", "bye");
+                            
                         myimageview.setImageBitmap(photo);
                         MediaStore.Images.Media.insertImage(getContentResolver(), photo, "xyzabc", "timepass");
                         Log.i("Takla", "takal");
@@ -371,7 +377,7 @@ public class MainActivity extends AppCompatActivity {
                                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        //Toast.makeText(getApplicationContext(),"Image Uploaded",Toast.LENGTH_LONG).show();
+                                        
                                     }
                                 }).setNegativeButton("", null).show();
 
@@ -558,10 +564,7 @@ public class MainActivity extends AppCompatActivity {
 //
 //    }
 private void getDeviceLocation() {
-    /*
-     * Get the best and most recent location of the device, which may be null in rare
-     * cases when a location is not available.
-     */
+    
     try {
         if (mLocationPermissionsGranted) {
             Task<Location> locationResult = mFusedLocationProviderClient.getLastLocation();
@@ -638,7 +641,6 @@ private void getDeviceLocation() {
             latLng=new LatLng(mLastLocation.getLatitude(),mLastLocation.getLongitude());
             userLat = mLastLocation.getLatitude();
             userLong = mLastLocation.getLongitude();
-            Log.d(TAG, "onLocationResult:"+"shivam is great");
             Log.d(TAG, "onComplete:"+latLng.latitude);
         }
     };
@@ -651,9 +653,7 @@ private void getDeviceLocation() {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+        
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
@@ -674,52 +674,12 @@ private void getDeviceLocation() {
         startActivity(i1);
     }
 
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-////        FirebaseStorage storage = FirebaseStorage.getInstance();
-//    if(requestCode==1&&resultCode==RESULT_OK&&data!=null&&data.getData()==null) {
-//        Bundle extras = data.getExtras();
-//
-//        photo = (Bitmap) extras.get("data");
-////        boolean output = doInference(photo);
-////        if(output)
-////            Log.i("log","z" );
-////        else
-////            Log.i("log", "y");
-//
-//        filePath = getImageUri(getApplicationContext(), photo);
-//        if(filePath!=null)
-//            Log.i("hi","bye");
-//        myimageview.setImageBitmap(photo);
-//        MediaStore.Images.Media.insertImage(getContentResolver(), photo, "taklus", "timepass");
-//        Log.i("Takla","takal");
-////        ActivityCompat.requestPermissions(MainActivity.this,
-////                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-////                1);
-////        ActivityCompat.requestPermissions(MainActivity.this,
-////                new String[]{Manifest.permission.INTERNET},
-////                1);
-//        Log.i("saved", "iamge");
-//        uploadImage();
-//        new AlertDialog.Builder(this)
-//                .setTitle("Complaint Registered")
-//                .setMessage("Thank you Citizen. Your Complaint Code is 00000")
-//                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        //Toast.makeText(getApplicationContext(),"Image Uploaded",Toast.LENGTH_LONG).show();
-//                    }
-//                }).setNegativeButton("", null).show();
-//
-//   }
-//
-//
-//
-//    }
 
-public Uri getImageUri(Context inContext, Bitmap inImage) {
+
+public Uri getImageUri(Context inContext, Bitmap inImage) 
+{
     Bitmap OutImage = Bitmap.createScaledBitmap(inImage, 300, 300,true);
-    String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), OutImage, "shiVAM", null);
+    String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), OutImage, "shiVAM", null);//tejas la vichar
     return Uri.parse(path);
 }
 
@@ -738,7 +698,7 @@ private void uploadImage() {
 
     SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault());
     String currentDateandTime = sdf.format(new Date());
-    final StorageReference riversRef = storageReference.child("images/"+ currentDateandTime + " rivers3.jpg");
+    final StorageReference riversRef = storageReference.child("images/"+ currentDateandTime + " rivers3.jpg");//tejas jpg la nav kay dych
     UploadTask uploadTask= riversRef.putFile(filePath);
 //    riversRef.putFile(filePath)
 //            .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -776,21 +736,19 @@ private void uploadImage() {
         public void onComplete(@NonNull Task<Uri> task) {
             if (task.isSuccessful()) {
                 Uri downloadUri = task.getResult();
-                Log.i("hhhhhhh",downloadUri.toString());
                 Toast.makeText(getApplicationContext(),"Image Uploaded",Toast.LENGTH_LONG).show();
                 //Random rand = new Random();
 
-// Obtain a number between [0 - 49].
+                // Obtain a number between [0 - 49].
                 //int n = rand.nextInt(50000);
-                Log.d(TAG, "onComplete:"+"jnjn");
                 mDatabase.child("users").child(String.valueOf(n)).setValue(new User(latLng.latitude,latLng.longitude,"false",downloadUri.toString()));  //false= unresloved complait
 
             }
-            else {
+            else 
+            {
                 // Handle failures
                 // ...
                 showInternetDialog();
-                Log.d(TAG, "onComplete:"+"soham is great");
             }
         }
     });
@@ -869,8 +827,6 @@ private void uploadImage() {
 
 
 
-    /**
-     * Created by Ilya Gazman on 3/6/2016.
-     */
+   
 
 }
