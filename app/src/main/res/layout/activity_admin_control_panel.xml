@@ -50,6 +50,6 @@
         android:layout_marginBottom="121dp"
         android:text="No Complains here, Good job!"
         android:textAlignment="center"
-        android:textColor="#BBDEFB" />
+        android:textColor="#000000" />
 
 </RelativeLayout>
