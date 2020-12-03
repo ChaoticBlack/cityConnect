@@ -28,9 +28,28 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
 
+        android:background="#BBDEFB"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="223dp"
+        android:layout_height="201dp"
+        android:layout_alignWithParentIfMissing="true"
+        android:layout_below="@+id/map"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="false"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="92dp"
+        android:layout_marginTop="52dp"
+        android:layout_marginEnd="96dp"
+        android:layout_marginBottom="121dp"
+        android:text="No Complains here, Good job!"
+        android:textAlignment="center"
+        android:textColor="#BBDEFB" />
 
 </RelativeLayout>

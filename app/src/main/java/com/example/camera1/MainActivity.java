@@ -339,8 +339,8 @@ public class MainActivity extends AppCompatActivity {
                     if (probability.get(0).getScore() > 0.51)
                     {
                         new AlertDialog.Builder(this)
-                                .setTitle("Not a pothole? ")
-                                .setMessage("Our Machine Learning Model is not detecting it as potehole PLEASE TRY AGAIN!!")
+                                .setTitle("Not a pothole")
+                                .setMessage("Our Machine Learning model thinks it is NOT a pothole. If this an error, please try again.")
                                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
